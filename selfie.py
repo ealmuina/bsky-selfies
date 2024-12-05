@@ -7,7 +7,7 @@ import psycopg2
 import matplotlib
 import numpy as np
 import pandas as pd
-from atproto import Client
+from atproto import Client, client_utils, models
 from PIL import Image
 from dotenv import load_dotenv
 
@@ -118,10 +118,22 @@ def main():
     im.save(img_byte_arr, quality=20, optimize=True, format='JPEG')
     img_data = img_byte_arr.getvalue()
 
-    client.send_image(
+    post = client.send_image(
         text=yesterday_str,
         image=img_data,
         image_alt='Selfie of Bluesky. Each dot represents a post, sorted chronologically, top-down, left-right. Color corresponds to the language.',
+    )
+    post_ref = models.create_strong_ref(post)
+
+    text_builder = client_utils.TextBuilder()
+    text_builder.text('Download the full resolution image ')
+    text_builder.link(
+        'at this link',
+        f'https://github.com/ealmuina/bsky-selfies/blob/main/images/posts_{yesterday_str}.png',
+    )
+    client.send_post(
+        text_builder,
+        reply_to=models.AppBskyFeedPost.ReplyRef(parent=post_ref, root=post_ref),
     )
 
 
