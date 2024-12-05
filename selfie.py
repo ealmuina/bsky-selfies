@@ -17,7 +17,7 @@ conn = psycopg2.connect(
     dbname="bsky_feeds",
     user="postgres",
     password="postgres",
-    host="valhalla",
+    host="localhost",
     port="5432"
 )
 
