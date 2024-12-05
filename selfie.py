@@ -2,6 +2,7 @@ import datetime
 import hashlib
 import io
 import os
+import subprocess
 
 import psycopg2
 import matplotlib
@@ -135,6 +136,10 @@ def main():
         text_builder,
         reply_to=models.AppBskyFeedPost.ReplyRef(parent=post_ref, root=post_ref),
     )
+
+    subprocess.run(['git', 'add' '.'])
+    subprocess.run(['git', 'commit' '-m', f'Generated image for {yesterday_str}'])
+    subprocess.run(['git', 'push'])
 
 
 if __name__ == "__main__":
