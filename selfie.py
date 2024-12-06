@@ -103,7 +103,7 @@ def grid_to_png(rgb_colors, image_width, image_height, output_filename):
 
 
 def main():
-    yesterday = datetime.datetime.now(datetime.UTC).date() - datetime.timedelta(days=1)
+    yesterday = datetime.datetime.now(datetime.timezone.utc).date() - datetime.timedelta(days=1)
     yesterday_str = yesterday.strftime('%Y-%m-%d')
     generate_graphic(yesterday_str)
 
